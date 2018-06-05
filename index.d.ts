@@ -187,6 +187,15 @@ interface StepIndicatorStyles {
   currentStepLabelColor?: string
 
   /**
+   * Color of the finished step label
+   * 
+   * @default '#000000'
+   * @type {string}
+   * @memberof StepIndicatorStyles
+   */
+  finishedStepLabelColor?: string
+
+  /**
    * Font size for the labels
    * 
    * @default 13
@@ -239,6 +248,14 @@ interface StepIndicatorProps {
    * @memberof StepIndicatorProps
    */
   labels?: string[]
+
+  /**
+   * Sublabels for each step	
+   * 
+   * @type {string[]}
+   * @memberof StepIndicatorProps
+   */
+  subLabels?: string[]
 
   /**
    * Callback fired when tapping on a step

@@ -203,6 +203,15 @@ interface StepIndicatorStyles {
    * @memberof StepIndicatorStyles
    */
   labelSize?: number
+
+  /**
+   * Font size for the labels
+   * 
+   * @default 11
+   * @type {number}
+   * @memberof StepIndicatorStyles
+   */
+  sublabelSize?: number
 }
 
 interface StepIndicatorProps {
@@ -255,7 +264,15 @@ interface StepIndicatorProps {
    * @type {string[]}
    * @memberof StepIndicatorProps
    */
-  subLabels?: string[]
+  sublabels?: string[]
+
+  /**
+   * Right labels for each step	
+   * 
+   * @type {string[]}
+   * @memberof StepIndicatorProps
+   */
+  rightLabels?: string[]
 
   /**
    * Callback fired when tapping on a step

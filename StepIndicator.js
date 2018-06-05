@@ -41,6 +41,7 @@ export default class StepIndicator extends PureComponent {
       stepIndicatorLabelUnFinishedColor: 'rgba(255,255,255,0.5)',
       labelColor: '#000000',
       labelSize: 13,
+      sublabelSize: 11,
       currentStepLabelColor: '#4aae4f',
       finishedStedLabelColor: '#999999'
     };
@@ -163,9 +164,8 @@ export default class StepIndicator extends PureComponent {
   }
 
   renderStepLabels = () => {
-    const { labels, direction, currentPosition, subLabels } = this.props;
+    const { labels, direction, currentPosition, sublabels, rightLabels } = this.props;
     var labelViews = labels.map((label, index) => {
-      // const selectedStepLabelStyle = index === currentPosition ? { color: this.customStyles.currentStepLabelColor } : { color: this.customStyles.labelColor }
       let selectedStepLabelStyle = { color: this.customStyles.labelColor }
       if (index < currentPosition) {
         selectedStepLabelStyle = { color: this.customStyles.finishedStedLabelColor }
@@ -174,11 +174,20 @@ export default class StepIndicator extends PureComponent {
       }
       return (
         <TouchableWithoutFeedback style={styles.stepLabelItem} key={index} onPress={() => this.stepPressed(index)}>
-          <View style={styles.stepLabelItem}>
-            <Text style={[styles.stepLabel, selectedStepLabelStyle, { fontSize: this.customStyles.labelSize }]}>
-              {label}
-            </Text>
-            {subLabels && subLabels[index] && <Text style={{ color: '#6e6e6e' }}>{subLabels[index]}</Text>}
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
+            <View style={styles.stepLabelItem}>
+              <Text style={[styles.stepLabel, selectedStepLabelStyle, { fontSize: this.customStyles.labelSize }]}>
+                {label}
+              </Text>
+              <Text style={[styles.stepSublabel, { fontSize: this.customStyles.sublabelSize }]}>
+                { (sublabels && sublabels[index]) ? sublabels[index] : ''}
+              </Text>
+            </View>
+            {rightLabels ? (
+              <Text style={[styles.stepSublabel, { fontSize: this.customStyles.sublabelSize, marginTop: 0 }]}>
+                {rightLabels[index]}
+              </Text>
+            ) : null}
           </View>
         </TouchableWithoutFeedback>
       )
@@ -301,6 +310,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent'
   },
   stepLabelsContainer: {
+    width: '100%',
     alignItems: 'center',
     justifyContent: 'space-around'
   },
@@ -319,6 +329,11 @@ const styles = StyleSheet.create({
     fontSize: 12,
     textAlign: 'center',
     fontWeight: '500'
+  },
+  stepSublabel: {
+    fontSize: 11,
+    color: '#6e6e6e',
+    marginTop: 5
   },
   stepLabelItem: {
     flex: 1,

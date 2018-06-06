@@ -172,22 +172,29 @@ export default class StepIndicator extends PureComponent {
       } else if (index === currentPosition) {
         selectedStepLabelStyle = { color: this.customStyles.currentStepLabelColor }
       }
+      const sublabel = (sublabels && sublabels[index]) ? (
+        <Text style={[styles.stepSublabel, { fontSize: this.customStyles.sublabelSize }]}>
+          {sublabels[index]}
+        </Text>
+      ) : null;
+      const rightLabel = rightLabels ? (
+        <Text style={[styles.stepRightLabel, { fontSize: this.customStyles.sublabelSize }]}>
+          {rightLabels[index]}
+        </Text>
+      ) : null;
+      const labelHeight = `${(1/labels.length) * 100}%`;
       return (
-        <TouchableWithoutFeedback style={styles.stepLabelItem} key={index} onPress={() => this.stepPressed(index)}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
+        <TouchableWithoutFeedback style={[styles.stepLabelItem ]} key={index} onPress={() => this.stepPressed(index)}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%', height: labelHeight }}>
             <View style={styles.stepLabelItem}>
               <Text style={[styles.stepLabel, selectedStepLabelStyle, { fontSize: this.customStyles.labelSize }]}>
                 {label}
               </Text>
-              <Text style={[styles.stepSublabel, { fontSize: this.customStyles.sublabelSize }]}>
-                { (sublabels && sublabels[index]) ? sublabels[index] : ''}
-              </Text>
+              {sublabel}
             </View>
-            {rightLabels ? (
-              <Text style={[styles.stepSublabel, { fontSize: this.customStyles.sublabelSize, marginTop: 0 }]}>
-                {rightLabels[index]}
-              </Text>
-            ) : null}
+            <View style={[styles.stepLabelItem]}>
+              {rightLabel}
+            </View>
           </View>
         </TouchableWithoutFeedback>
       )
@@ -334,6 +341,11 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: '#6e6e6e',
     marginTop: 5
+  },
+  stepRightLabel: {
+    fontSize: 11,
+    color: '#6e6e6e',
+    alignSelf: 'flex-end',
   },
   stepLabelItem: {
     flex: 1,

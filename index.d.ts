@@ -275,6 +275,14 @@ interface StepIndicatorProps {
   rightLabels?: string[]
 
   /**
+   * If is in progress of current step	
+   * 
+   * @type {boolean}
+   * @memberof StepIndicatorProps
+   */
+  inProgress?: boolean
+
+  /**
    * Callback fired when tapping on a step
    * 
    * @param {number} step 

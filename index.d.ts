@@ -283,6 +283,14 @@ interface StepIndicatorProps {
   inProgress?: boolean
 
   /**
+   * Icon of the relay point	
+   * 
+   * @type {string}
+   * @memberof StepIndicatorProps
+   */
+  inProgressImage?: string
+
+  /**
    * Callback fired when tapping on a step
    * 
    * @param {number} step 

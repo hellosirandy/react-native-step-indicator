@@ -2,7 +2,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet, Animated, TouchableWithoutFeedback, Image } from 'react-native';
-import fire from './icon_fire.png'
 
 const STEP_STATUS = {
   CURRENT: 'current',
@@ -79,7 +78,7 @@ export default class StepIndicator extends PureComponent {
   }
 
   renderRelayPoint = () => {
-    const { stepCount, direction, inProgress, currentPosition } = this.props;
+    const { stepCount, direction, inProgress, currentPosition, inProgressImage } = this.props;
     let position = currentPosition;
     if (position > stepCount - 1) {
       position = stepCount - 1;
@@ -89,6 +88,7 @@ export default class StepIndicator extends PureComponent {
     if (direction === 'vertical') {
       relayPointStyle = {
         position: 'absolute',
+        zIndex: 999,
         left: (this.state.width - this.customStyles.currentStepIndicatorSize) / 2,
         top: this.state.height / (2 * stepCount) + position - this.customStyles.currentStepIndicatorSize / 2,
         width: this.customStyles.currentStepIndicatorSize,
@@ -99,12 +99,12 @@ export default class StepIndicator extends PureComponent {
         position: 'absolute',
         top: (this.state.height - this.customStyles.currentStepIndicatorSize) / 2,
         left: this.state.width / (2 * stepCount) + position - this.customStyles.currentStepIndicatorSize / 2,
-        width: this.customStyles.currentStepIndicatorSize,
+        // width: this.customStyles.currentStepIndicatorSize,
         height: this.customStyles.currentStepIndicatorSize,
       }
     }
     return (
-      <Image source={fire} style={relayPointStyle} />
+      <Image source={inProgressImage} style={relayPointStyle} resizeMode="contain" />
     )
   }
 
@@ -187,15 +187,6 @@ export default class StepIndicator extends PureComponent {
           </View>
         </TouchableWithoutFeedback>
       )
-      // if (position === this.props.currentPosition && this.props.inProgress) {
-      //   steps.push(
-      //     <TouchableWithoutFeedback key={position+0.5} onPress={() => this.stepPressed(position+0.5)}>
-      //       <View style={[styles.stepContainer, direction === 'vertical' ? { flexDirection: 'column' } : { flexDirection: 'row' }]}>
-      //         {this.renderStep(position+0.5)}
-      //       </View>
-      //     </TouchableWithoutFeedback>
-      //   )
-      // }
     }
     return (
       <View onLayout={(event) => this.setState({ width: event.nativeEvent.layout.width, height: event.nativeEvent.layout.height })} style={[styles.stepIndicatorContainer, direction === 'vertical' ? { flexDirection: 'column', width: this.customStyles.currentStepIndicatorSize } : { flexDirection: 'row', height: this.customStyles.currentStepIndicatorSize }]}>
@@ -324,7 +315,11 @@ export default class StepIndicator extends PureComponent {
     if (position > stepCount - 1) {
       position = stepCount - 1;
     }
-    const animateToPosition = (this.state.progressBarSize / (stepCount - 1)) * (inProgress ? (position + 0.5) : position);
+    // const animateToPosition = (this.state.progressBarSize / (stepCount - 1)) * (inProgress ? (position + 0.5) : position);
+    let animateToPosition = (this.state.progressBarSize / (stepCount - 1)) * position;
+    if (inProgress) {
+      animateToPosition = (this.state.progressBarSize / (stepCount - 1)) * (position + 0.5) - this.customStyles.currentStepIndicatorSize / 2;
+    }
     this.sizeAnim.setValue(this.customStyles.stepIndicatorSize);
     this.borderRadiusAnim.setValue(this.customStyles.stepIndicatorSize / 2);
     Animated.sequence([

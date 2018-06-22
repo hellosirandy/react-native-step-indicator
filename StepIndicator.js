@@ -43,7 +43,9 @@ export default class StepIndicator extends PureComponent {
       labelSize: 13,
       sublabelSize: 11,
       currentStepLabelColor: '#4aae4f',
-      finishedStedLabelColor: '#999999'
+      finishedStedLabelColor: '#999999',
+      rightLabelAlign: 'flex-end',
+      leftPortion: 50,
     };
 
     this.customStyles = Object.assign(defaultStyles, props.customStyles);
@@ -104,7 +106,7 @@ export default class StepIndicator extends PureComponent {
       }
     }
     return (
-      <Image source={inProgressImage} style={relayPointStyle} resizeMode="contain" />
+      <Image source={inProgressImage} style={relayPointStyle} resizeMode="contain"/>
     )
   }
 
@@ -210,21 +212,21 @@ export default class StepIndicator extends PureComponent {
         </Text>
       ) : null;
       const rightLabel = rightLabels ? (
-        <Text style={[styles.stepRightLabel, { fontSize: this.customStyles.sublabelSize }]}>
+        <Text style={[styles.stepRightLabel, { fontSize: this.customStyles.sublabelSize, alignSelf: this.customStyles.rightLabelAlign }]}>
           {rightLabels[index]}
         </Text>
       ) : null;
-      const labelHeight = `${(1 / labels.length) * 100}%`;
+      const labelHeight = `${(1/labels.length) * 100}%`;
       return (
-        <TouchableWithoutFeedback style={[styles.stepLabelItem]} key={index} onPress={() => this.stepPressed(index)}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%', height: labelHeight }}>
-            <View style={styles.stepLabelItem}>
+        <TouchableWithoutFeedback style={[styles.stepLabelItem ]} key={index} onPress={() => this.stepPressed(index)}>
+          <View style={{ flexDirection: 'row', width: '100%', height: labelHeight }}>
+            <View style={[styles.stepLabelItem, { width: `${this.customStyles.leftPortion}%`}]}>
               <Text style={[styles.stepLabel, selectedStepLabelStyle, { fontSize: this.customStyles.labelSize }]}>
                 {label}
               </Text>
               {sublabel}
             </View>
-            <View style={[styles.stepLabelItem]}>
+            <View style={[styles.stepLabelItem, { width: `${100 - this.customStyles.leftPortion}%`}]}>
               {rightLabel}
             </View>
           </View>
@@ -325,16 +327,16 @@ export default class StepIndicator extends PureComponent {
     Animated.sequence([
       Animated.timing(
         this.progressAnim,
-        { toValue: animateToPosition, duration: 200 }
+        { toValue: animateToPosition, duration: 50 }
       ),
       Animated.parallel([
         Animated.timing(
           this.sizeAnim,
-          { toValue: this.customStyles.currentStepIndicatorSize, duration: 100 }
+          { toValue: this.customStyles.currentStepIndicatorSize, duration: 50 }
         ),
         Animated.timing(
           this.borderRadiusAnim,
-          { toValue: this.customStyles.currentStepIndicatorSize / 2, duration: 100 }
+          { toValue: this.customStyles.currentStepIndicatorSize / 2, duration: 50 }
         )
       ])
     ]).start();
@@ -370,8 +372,8 @@ const styles = StyleSheet.create({
   },
   stepLabel: {
     fontSize: 12,
-    textAlign: 'center',
-    fontWeight: '500'
+    textAlign: 'left',
+    fontWeight: '500',
   },
   stepSublabel: {
     fontSize: 11,
@@ -380,11 +382,9 @@ const styles = StyleSheet.create({
   },
   stepRightLabel: {
     fontSize: 11,
-    color: '#6e6e6e',
-    alignSelf: 'flex-end',
+    color: '#000000',
   },
   stepLabelItem: {
-    flex: 1,
     alignItems: 'flex-start',
     justifyContent: 'center'
   }

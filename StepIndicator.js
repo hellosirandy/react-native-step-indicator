@@ -99,14 +99,15 @@ export default class StepIndicator extends PureComponent {
     } else {
       relayPointStyle = {
         position: 'absolute',
+        zIndex: 999,
         top: (this.state.height - this.customStyles.currentStepIndicatorSize) / 2,
         left: this.state.width / (2 * stepCount) + position - this.customStyles.currentStepIndicatorSize / 2,
-        // width: this.customStyles.currentStepIndicatorSize,
+        width: this.customStyles.currentStepIndicatorSize,
         height: this.customStyles.currentStepIndicatorSize,
       }
     }
     return (
-      <Image source={inProgressImage} style={relayPointStyle} resizeMode="contain"/>
+      <Image source={inProgressImage} style={relayPointStyle} resizeMode="contain" />
     )
   }
 
@@ -216,17 +217,17 @@ export default class StepIndicator extends PureComponent {
           {rightLabels[index]}
         </Text>
       ) : null;
-      const labelHeight = `${(1/labels.length) * 100}%`;
+      const labelHeight = `${(1 / labels.length) * 100}%`;
       return (
-        <TouchableWithoutFeedback style={[styles.stepLabelItem ]} key={index} onPress={() => this.stepPressed(index)}>
+        <TouchableWithoutFeedback style={[styles.stepLabelItem]} key={index} onPress={() => this.stepPressed(index)}>
           <View style={{ flexDirection: 'row', width: '100%', height: labelHeight }}>
-            <View style={[styles.stepLabelItem, { width: `${this.customStyles.leftPortion}%`}]}>
+            <View style={[styles.stepLabelItem, { width: `${this.customStyles.leftPortion}%` }]}>
               <Text style={[styles.stepLabel, selectedStepLabelStyle, { fontSize: this.customStyles.labelSize }]}>
                 {label}
               </Text>
               {sublabel}
             </View>
-            <View style={[styles.stepLabelItem, { width: `${100 - this.customStyles.leftPortion}%`}]}>
+            <View style={[styles.stepLabelItem, { width: `${100 - this.customStyles.leftPortion}%` }]}>
               {rightLabel}
             </View>
           </View>
@@ -317,7 +318,6 @@ export default class StepIndicator extends PureComponent {
     if (position > stepCount - 1) {
       position = stepCount - 1;
     }
-    // const animateToPosition = (this.state.progressBarSize / (stepCount - 1)) * (inProgress ? (position + 0.5) : position);
     let animateToPosition = (this.state.progressBarSize / (stepCount - 1)) * position;
     if (inProgress) {
       animateToPosition = (this.state.progressBarSize / (stepCount - 1)) * (position + 0.5) - this.customStyles.currentStepIndicatorSize / 2;
@@ -327,16 +327,16 @@ export default class StepIndicator extends PureComponent {
     Animated.sequence([
       Animated.timing(
         this.progressAnim,
-        { toValue: animateToPosition, duration: 50 }
+        { toValue: animateToPosition, duration: 500 }
       ),
       Animated.parallel([
         Animated.timing(
           this.sizeAnim,
-          { toValue: this.customStyles.currentStepIndicatorSize, duration: 50 }
+          { toValue: this.customStyles.currentStepIndicatorSize, duration: 500 }
         ),
         Animated.timing(
           this.borderRadiusAnim,
-          { toValue: this.customStyles.currentStepIndicatorSize / 2, duration: 50 }
+          { toValue: this.customStyles.currentStepIndicatorSize / 2, duration: 500 }
         )
       ])
     ]).start();
